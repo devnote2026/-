@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>オサムの質問箱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!--
+  ========================================================
+  【AdSense 設定手順】審査通過後にここを有効化してください
+  1. 下の script タグのコメントを外す
+  2. YOUR-ADSENSE-ID を ca-pub-XXXXXXXXXX に差し替える
+  ========================================================
+-->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR-ADSENSE-ID" crossorigin="anonymous"></script> -->
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F7F5;
+    --surface: #FFFFFF;
+    --surface2: #F0F0EE;
+    --text: #1A1A1A;
+    --text-muted: #6B6B69;
+    --accent: #4A7C59;
+    --accent-light: #E6F0E9;
+    --accent-dark: #2F5239;
+    --border: rgba(26,26,26,0.12);
+    --border-strong: rgba(26,26,26,0.24);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font-body: 'Noto Sans JP', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .site-logo {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .twitter-link {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .twitter-link:hover { color: var(--accent); }
+
+  /* LAYOUT */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .hero-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .hero p {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 10%; right: 10%;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px 2px 0 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .tab-btn.active { color: var(--accent); }
+  .tab-btn.active::after { opacity: 1; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* FORM */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    resize: vertical;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  textarea:focus { border-color: var(--accent); }
+  textarea::placeholder { color: #B0B0AE; }
+
+  .char-count {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+  }
+  .char-count.warn { color: #D97706; }
+  .char-count.over { color: #DC2626; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.03em;
+  }
+  .submit-btn:hover { background: var(--accent-dark); }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { background: var(--border-strong); cursor: not-allowed; }
+
+  .privacy-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+
+  /* AD INTERSTITIAL */
+  #page-ad {
+    display: none;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+  .ad-header {
+    text-align: center;
+    padding: 2rem 0 1.5rem;
+  }
+  .ad-step {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+  .ad-header h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .ad-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .ad-slot {
+    background: var(--surface2);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    min-height: 120px;
+    margin: 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: var(--font-display);
+  }
+  .see-answers-btn {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 1.5rem auto 0;
+    padding: 13px;
+    background: var(--surface);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+  }
+  .see-answers-btn:hover { background: var(--accent-light); }
+
+  /* ANSWERS */
+  .answers-header {
+    margin-bottom: 1.25rem;
+  }
+  .answers-count {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .qa-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .qa-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+  }
+  .qa-card.unanswered::before { background: #D97706; }
+
+  .q-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .a-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .a-text {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .status-badge {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .badge-answered {
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    border: 1px solid rgba(74,124,89,0.3);
+  }
+  .badge-waiting {
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1px solid rgba(180,130,0,0.25);
+  }
+  .qa-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-family: var(--font-display);
+  }
+
+  /* LOADING / EMPTY */
+  .loading-state, .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .spinner {
+    width: 28px; height: 28px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--text);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    white-space: nowrap;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    main { padding: 1.5rem 1rem 3rem; }
+    .form-card { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="site-logo" onclick="showHome()">
+      <span class="logo-dot"></span>オサムの質問箱
+    </span>
+    <a href="https://twitter.com/osamu" class="twitter-link" target="_blank" rel="noopener">𝕏 @osamu</a>
+  </div>
+</header>
+
+<!-- ===== 広告インタースティシャル ===== -->
+<div id="page-ad">
+  <div class="ad-header">
+    <div class="ad-step">STEP 2 / 2</div>
+    <h2>回答を表示します</h2>
+    <p>広告の後、すべての回答をご覧いただけます</p>
+  </div>
+
+  <div class="ad-slot">
+    <!--
+    ========================================================
+    【審査通過後】ここの「広告スペース（AdSense）」テキストを
+    下記の <ins> タグに丸ごと置き換えてください。
+    YOUR-ADSENSE-ID と YOUR-AD-SLOT を差し替えること。
+    ========================================================
+    <ins class="adsbygoogle"
+         style="display:block;min-height:100px;"
+         data-ad-client="ca-pub-YOUR-ADSENSE-ID"
+         data-ad-slot="YOUR-AD-SLOT"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    広告スペース（AdSense）
+  </div>
+
+  <button class="see-answers-btn" onclick="showAnswers()">回答を見る →</button>
+</div>
+
+<!-- ===== メインアプリ ===== -->
+<main id="page-main">
+
+  <div class="hero">
+    <div class="hero-avatar">O</div>
+    <h1>オサムの質問箱</h1>
+    <p>アプリ開発・地域イベントについて、なんでも気軽に聞いてください</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-btn-ask" onclick="switchTab('ask', this)">質問する</button>
+    <button class="tab-btn" id="tab-btn-answers" onclick="switchTab('answers', this)">回答一覧</button>
+  </div>
+
+  <!-- 質問フォーム -->
+  <div id="tab-ask" class="tab-panel active">
+    <div class="form-card">
+      <label class="form-label" for="q-input">質問を入力</label>
+      <textarea id="q-input"
+        placeholder="なんでも気軽に聞いてください（匿名で送信されます）"
+        maxlength="300"
+        oninput="updateCount()"></textarea>
+      <div class="char-count" id="char-count">0 / 300</div>
+      <button class="submit-btn" id="submit-btn" onclick="submitQuestion()">送信する</button>
+      <p class="privacy-note">送信後、広告を経由して回答一覧をご覧いただけます</p>
+    </div>
+  </div>
+
+  <!-- 回答一覧 -->
+  <div id="tab-answers" class="tab-panel">
+    <div class="answers-header">
+      <span class="answers-count" id="answers-count"></span>
+    </div>
+    <div id="answers-list">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        読み込み中
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer style="text-align:center;padding:2rem 1.5rem;border-top:1px solid var(--border);margin-top:2rem;">
+  <a href="privacy.html" style="font-size:13px;color:var(--text-muted);text-decoration:underline;text-underline-offset:3px;">プライバシーポリシー</a>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==============================================================
+   設定 — GAS_URL だけ書き換えれば動きます
+============================================================== */
+const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
+
+/* ==============================================================
+   タブ切り替え
+============================================================== */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'answers') loadAnswers();
+}
+
+/* ==============================================================
+   文字数カウント
+============================================================== */
+function updateCount() {
+  const len = document.getElementById('q-input').value.length;
+  const el = document.getElementById('char-count');
+  el.textContent = len + ' / 300';
+  el.className = 'char-count' + (len >= 300 ? ' over' : len > 270 ? ' warn' : '');
+}
+
+/* ==============================================================
+   質問送信
+   GAS は no-cors で叩く（レスポンス不要）→ 成功扱いで進む
+============================================================== */
+async function submitQuestion() {
+  const text = document.getElementById('q-input').value.trim();
+  if (!text) { showToast('質問を入力してください'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '送信中…';
+
+  try {
+    const url = GAS_URL + '?action=submit&question=' + encodeURIComponent(text);
+    // no-cors: レスポンス読めないが送信はできる
+    await fetch(url, { method: 'GET', mode: 'no-cors' });
+  } catch (_) {
+    // no-cors では必ず catch に落ちるが送信済みのため続行
+  }
+
+  document.getElementById('q-input').value = '';
+  updateCount();
+  btn.disabled = false;
+  btn.textContent = '送信する';
+  showToast('送信しました！');
+  setTimeout(showAdPage, 800);
+}
+
+/* ==============================================================
+   広告ページ → 回答一覧
+============================================================== */
+function showAdPage() {
+  document.getElementById('page-main').style.display = 'none';
+  document.getElementById('page-ad').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function showAnswers() {
+  document.getElementById('page-ad').style.display = 'none';
+  document.getElementById('page-main').style.display = 'block';
+  switchTab('answers', document.getElementById('tab-btn-answers'));
+  window.scrollTo(0, 0);
+}
+
+function showHome() {
+  document.getElementById('page-ad').style.display = 'none';
+  document.getElementById('page-main').style.display = 'block';
+}
+
+/* ==============================================================
+   回答一覧取得
+   GAS の doGet?action=list が JSON を返す
+   → CORS 対応のためヘッダー設定が GAS 側に必要（gas-backend.js に記載済み）
+============================================================== */
+async function loadAnswers() {
+  const list = document.getElementById('answers-list');
+  const countEl = document.getElementById('answers-count');
+  list.innerHTML = '<div class="loading-state"><div class="spinner"></div>読み込み中</div>';
+  countEl.textContent = '';
+
+  try {
+    const res = await fetch(GAS_URL + '?action=list');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    renderAnswers(data.rows || []);
+  } catch (e) {
+    list.innerHTML = '<div class="empty-state">データの取得に失敗しました。<br>GAS URLが正しく設定されているか確認してください。</div>';
+  }
+}
+
+function renderAnswers(rows) {
+  const list = document.getElementById('answers-list');
+  const countEl = document.getElementById('answers-count');
+
+  const answered = rows.filter(r => r.answer);
+  countEl.textContent = answered.length + ' 件の回答';
+
+  if (!rows.length) {
+    list.innerHTML = '<div class="empty-state">まだ質問がありません。<br>最初の質問を送ってみよう！</div>';
+    return;
+  }
+
+  list.innerHTML = rows.map(r => {
+    const hasAnswer = !!r.answer;
+    const date = r.date
+      ? new Date(r.date).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })
+      : '';
+    return `
+      <div class="qa-card ${hasAnswer ? '' : 'unanswered'}">
+        <span class="status-badge ${hasAnswer ? 'badge-answered' : 'badge-waiting'}">
+          ${hasAnswer ? '回答済み' : '回答待ち'}
+        </span>
+        <div class="q-label">Q</div>
+        <div class="q-text">${esc(r.question)}</div>
+        ${hasAnswer ? `
+          <div class="a-label">A — オサム</div>
+          <div class="a-text">${esc(r.answer).replace(/\n/g, '<br>')}</div>
+        ` : ''}
+        ${date ? `<div class="qa-date">${date}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function esc(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* ==============================================================
+   トースト通知
+============================================================== */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* 初回ロード時に回答一覧をプリフェッチ（任意） */
+// loadAnswers();
+</script>
+</body>
+</html>
