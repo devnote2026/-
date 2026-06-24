@@ -543,12 +543,9 @@ async function submitQuestion() {
   btn.textContent = '送信中…';
 
   try {
-    const url = GAS_URL + '?action=submit&question=' + encodeURIComponent(text);
-    // no-cors: レスポンス読めないが送信はできる
+    const url = GAS_URL + '?question=' + encodeURIComponent(text);
     await fetch(url, { method: 'GET', mode: 'no-cors' });
-  } catch (_) {
-    // no-cors では必ず catch に落ちるが送信済みのため続行
-  }
+  } catch (_) {}
 
   document.getElementById('q-input').value = '';
   updateCount();
