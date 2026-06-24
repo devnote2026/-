@@ -542,10 +542,16 @@ async function submitQuestion() {
   btn.disabled = true;
   btn.textContent = '送信中…';
 
+  const url = GAS_URL + '?question=' + encodeURIComponent(text);
+
   try {
-    const url = GAS_URL + '?question=' + encodeURIComponent(text);
-    await fetch(url, { method: 'GET', mode: 'no-cors' });
-  } catch (_) {}
+    // まずCORSありで試みる
+    const res = await fetch(url);
+    await res.json();
+  } catch (_) {
+    // CORS失敗時はno-corsで再送（レスポンス読めないが届く）
+    try { await fetch(url, { mode: 'no-cors' }); } catch (_) {}
+  }
 
   document.getElementById('q-input').value = '';
   updateCount();
